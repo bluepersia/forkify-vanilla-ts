@@ -1,9 +1,11 @@
+import { AppContext } from "../app";
 import { IRecipe } from "../models/recipe";
 
-export default function RecipePreview ({title, publisher, image_url, source_url}:IRecipe) : string 
+export default function RecipePreview ({id, title, publisher, image_url, source_url}:IRecipe) : string 
 {
-    return `<li class="preview">
-    <a class="preview__link preview__link--active" href="#23456">
+
+    return `<li class="preview" data-id="${id}">
+    <a class="preview__link ${id === AppContext.activeId && 'preview__link--active'}" href="#23456">
       <figure class="preview__fig">
         <img src="${image_url}" alt="${title}" />
       </figure>
