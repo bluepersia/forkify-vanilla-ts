@@ -19,15 +19,50 @@ export default class MainRecipe
         recipe: null
     }
 
+    get servings () : number {
+        return this.state.recipe?.servings || 0;
+    }
+
+    set servings (val:number)
+    {
+        if (val > 8 || val < 1)
+            return;
+
+        if (this.state.recipe)
+        {
+            const mult = val / this.state.recipe.servings;
+
+            this.state.recipe.servings = val;
+            this.state.recipe.cooking_time *= mult;
+            this.state.recipe.ingredients.forEach (ing => ing.quantity *= mult);
+
+            this.render ();
+        }
+
+    }
+
     recipeDiv = document.querySelector<HTMLDivElement> ('.recipe')!;
+    
 
     constructor ()
     {
+        this.recipeDiv.addEventListener ('click', this.click.bind(this));
+
         AppContext.onChange.push ((id:string):void =>
         {
             if (id === 'ACTIVE_ID')
                 this.fetchRecipe ();
         });
+    }
+
+    click (e:MouseEvent): void 
+    {
+        const target = e.target as HTMLElement;
+
+        if (target.closest ('.btn--decrease-servings'))
+            this.servings--;
+        else if (target.closest ('.btn--increase-servings'))
+            this.servings++;
     }
 
     async fetchRecipe () : Promise<void>
