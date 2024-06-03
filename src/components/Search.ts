@@ -1,3 +1,4 @@
+import { AppContext } from "../app";
 import { IRecipe } from "../models/recipe";
 import { IStateBase } from "../models/state";
 import { apiKey, baseURL } from "../utility";
@@ -53,6 +54,12 @@ export default class Search
     {
         this.searchForm.addEventListener ('submit', this.submit.bind(this));
         this.paginationDiv.addEventListener ('click', this.paginationClick.bind(this));
+
+        AppContext.onChange.push ((id:string):void=> 
+        {
+            if (id === 'ACTIVE_ID')
+                this.render ();
+        });
     }
 
 
