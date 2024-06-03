@@ -1,3 +1,4 @@
+import MainRecipe from "./components/MainRecipe";
 import Search from "./components/Search";
 
 type AppContextType = 
@@ -23,6 +24,7 @@ class App
 {
 
     search = new Search ();
+    mainRecipe = new MainRecipe ();
 
     constructor ()
     {
