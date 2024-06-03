@@ -9,6 +9,7 @@ type AppContextType =
     setActiveId: (id:string) => void,
     bookmarks: IRecipe[],
     bookmark: (recipe:IRecipe) => void,
+    setBookmarks: (recipes:IRecipe[]) => void,
     onChange: ((id:string) => void)[]
 };
 
@@ -31,6 +32,12 @@ export const AppContext : AppContextType =
 
             this.onChange.forEach (el => el ('BOOKMARKS'));
     },
+    setBookmarks: function (recipes:IRecipe[]) : void 
+    {
+        this.bookmarks = recipes;
+
+        this.onChange.forEach (el => el ('BOOKMARKS'));
+    },
     onChange: []
 }
 
@@ -44,6 +51,16 @@ class App
     constructor ()
     {
         document.addEventListener ('click', this.click);
+
+        const bookmarksJSON = localStorage.getItem ('bookmarks');
+
+        if (bookmarksJSON)
+            AppContext.setBookmarks (JSON.parse (bookmarksJSON));
+
+        AppContext.onChange.push ((id:string):void => {
+            if (id === 'BOOKMARKS')
+                localStorage.setItem ('bookmarks', JSON.stringify (AppContext.bookmarks));
+        })
     }
 
     click (e:MouseEvent ): void 

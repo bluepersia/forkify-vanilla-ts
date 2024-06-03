@@ -86,6 +86,7 @@ export default class Search
     {
         try 
         {
+            this.state.error = null;
             this.state.isLoading = true;
             this.render ();
 

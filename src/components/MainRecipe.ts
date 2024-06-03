@@ -72,6 +72,7 @@ export default class MainRecipe
     {
         try 
         {
+            this.state.error = null;
             this.state.isLoading = false;
             this.render ();
 
